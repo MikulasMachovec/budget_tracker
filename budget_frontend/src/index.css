@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+    --background: #F39F9F;
+    --card-background: #FFECC0;
+    --navbar-color: #FFC29B;
+}
+
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+html {
+    background : var(--background)
+}
+
+nav{
+    background : var(--navbar-color)
+}
+
+.card{
+    background : var(--card-background)
+}
