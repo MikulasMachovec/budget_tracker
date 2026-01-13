@@ -3,9 +3,15 @@ import {Routes, Route} from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Navbar from './components/Navbar.jsx'
 import Profile from './pages/Profile.jsx'
+import Footer from './components/Footer.jsx'
 
 function App() {
-    const user = false
+    const user = {
+      name : 'Dev',
+      monthlyBudget : 2000,
+      spending : 1500,
+      balance : 500
+    }
   return (
     <>
         <Navbar user={user} />
@@ -16,6 +22,7 @@ function App() {
             </Routes>
         
         </main>
+        <Footer />
     </>
   )
 }

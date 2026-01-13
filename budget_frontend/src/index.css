@@ -25,3 +25,7 @@ nav{
 .card{
     background : var(--card-background)
 }
+
+.footer{
+    background : var(--navbar-color)
+}
