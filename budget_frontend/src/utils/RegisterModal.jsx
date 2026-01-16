@@ -1,18 +1,38 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import api from '../api.js';
 
 export default function RegisterModal({ isOpen, onClose, onSave }){
-    const [ loginForm, setLoginForm ] = useState({
-        name: '',
-        password: '',
-    })
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [password_2, setPassword_2] = useState('');
+    const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState(false);
 
-    const handleChange = (e) => {
-        return
-    }
 
-    const handleSubmit = (e) => {
+    const handleRegistration = async (e) => {
         e.preventDefault();
+        
+        try {
+            setErrors({})
+            if(password !== password_2){
+                setErrors({ password : 'Passwords do not match' });
+                return; 
+            }
+                
+            const userData = {
+                username, email, password
+            }
+            const response = await api.post('/api/account/register/', userData) 
+            setSuccess(true)
+        } catch (error) {
+            setErrors(prevError =>({
+                ...prevError,
+                ...error.response.data}))
+            console.log('Registration error:', errors)
+        }       
+       
         return
     }
 
@@ -43,30 +63,74 @@ export default function RegisterModal({ isOpen, onClose, onSave }){
                             </div>
         
                                 
-                                <form onSubmit={handleSubmit} className='space-y-4' >
+                                <form onSubmit={handleRegistration} className='space-y-4' >
+                                    {/* Username */}
                                     <div>
-                                        <label className='block text-sm font-medium text-gray-700'>Email:</label>
+                                        <label htmlFor='username' className='block text-sm font-medium text-gray-700'>Usermane:</label>
+                                        <input type="text" 
+                                        id='username'
+                                        name="username"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        autoComplete='on'
+                                        required
+                                        className={`mt-1 block w-full rounded-xl p-2 focus:ring-blue-200'
+                                            ${errors.username ? 'border border-red-500' : ' border border-gray-300' }`}/>
+                                        <small>{errors.username && <div className='text-red-500'>{errors.username}</div>}</small>
+                                    </div>
+                                    
+                                    {/* Email */}
+                                    <div>
+                                        <label htmlFor='email' className='block text-sm font-medium text-gray-700'>Email:</label>
                                         <input type="email" 
+                                        id='email'
                                         name="email"
-                                        value={loginForm.email}
-                                        onChange={handleChange}
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        autoComplete='on'
                                         required
-                                        className='mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring-blue-200'/>
+                                        className={`mt-1 block w-full rounded-xl p-2 focus:ring-blue-200'
+                                            ${errors.email ? 'border border-red-500' : ' border border-gray-300' }`}
+                                        />
+                                        <small>{errors.email && <div className='text-red-500'>{errors.email}</div>}</small>
                                     </div>
-        
+
+                                    {/* Password */}
                                     <div>
-                                        <label className='block text-sm font-medium text-gray-700'>Password:</label>
-                                        <input type="password" 
+                                        <label htmlFor='password' className='block text-sm font-medium text-gray-700'>Password:</label>
+                                        <input type="password"
+                                        id='password' 
                                         name="password"
-                                        value={loginForm.password}
-                                        onChange={handleChange}
+                                        value={password}
+                                        onChange={(e)=> setPassword(e.target.value)}
+                                        autoComplete='off'
                                         required
-                                        className='mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring-blue-200'/>
+                                        className={`mt-1 block w-full rounded-xl p-2 focus:ring-blue-200'
+                                            ${errors.password ? 'border border-red-500' : ' border border-gray-300' }`}/>
+                                        <small>{errors.password && <div className='text-red-500'>{errors.password}</div>}</small>
+                                    </div>
+
+                                    {/* Second Password */}
+                                    <div>
+                                        <label htmlFor='password_again' className='block text-sm font-medium text-gray-700'>Password again:</label>
+                                        <input type="password" 
+                                        id='password_again'
+                                        name="password"
+                                        value={password_2}
+                                        onChange={(e) => setPassword_2(e.target.value)}
+                                        autoComplete="off"
+                                        required
+                                        className={`mt-1 block w-full rounded-xl p-2 focus:ring-blue-200'
+                                            ${errors.password ? 'border border-red-500' : ' border border-gray-300' }`}/>
+                                        <small>{errors.password && <div className='text-red-500'>{errors.password}</div>}</small>
                                     </div>
         
-                                    <div className='flex justify-end'>
-                                    <a href="#" className=" ml-4 text-blue-600 underline hover:text-gray-200 transition">Register</a>
+                                    <div className='flex justify-center'>
+                                        <p>Already budgeting?</p>
+                                    <a href="#" className=" ml-4 text-blue-600 underline hover:text-gray-200 transition">Login</a>
                                     </div>
+
+                                    {success && <div className='block w-full p-1 border border-green-600 rounded-xl bg-green-300 text-center'>Registered successfully</div> }
                                     
                                     <div className='flex justify-center'>
                                         <button

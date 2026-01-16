@@ -6,12 +6,13 @@ import Profile from './pages/Profile.jsx'
 import Footer from './components/Footer.jsx'
 
 function App() {
-    const user = {
-      name : 'Dev',
-      monthlyBudget : 2000,
-      spending : 1500,
-      balance : 500
-    }
+    const user = false
+    // {
+    //   name : 'Dev',
+    //   monthlyBudget : 2000,
+    //   spending : 1500,
+    //   balance : 500
+    // }
   return (
     <>
         <Navbar user={user} />
