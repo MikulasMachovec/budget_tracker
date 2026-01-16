@@ -11,7 +11,7 @@ class UserManager(BaseUserManager):
             raise ValueError('The email is required.')
         
         email = self.normalize_email(email)      
-        user = self.model(emial=email, **extra_fields)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -20,6 +20,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_admin', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
@@ -33,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(max_length=30, unique=True)
 
 
     date_joined = models.DateTimeField(auto_now_add=True)
