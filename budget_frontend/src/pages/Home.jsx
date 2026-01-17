@@ -1,13 +1,16 @@
-import React from 'react'
-import MonthAndYear from '../components/Month_and_year.jsx'
-import Dashboard from '../components/Dashboard.jsx'
-import AddExpense from '../components/AddExpense.jsx'
-import Friends from '../components/Friends.jsx'
-import Budgets from '../components/Budgets.jsx'
+import React from 'react';
+import MonthAndYear from '../components/Month_and_year.jsx';
+import Dashboard from '../components/Dashboard.jsx';
+import AddExpense from '../components/AddExpense.jsx';
+import Friends from '../components/Friends.jsx';
+import Budgets from '../components/Budgets.jsx';
+import { useAuth } from '../AuthProvider';
 
 
-function Home({ user }) {
+function Home() {
 
+  const { user } = useAuth();
+  console.log(user)
   const transactions = [
     { id: 1, description: 'Groceries', amount: -50, date: '2025-10-10' },
     { id: 2, description: 'Salary', amount: 3000, date: '2025-10-01' },
@@ -19,6 +22,17 @@ function Home({ user }) {
       {id:2, name: 'Car', used: 100, max_amount: 3500},
       {id:3, name: 'Fun', used: 175, max_amount: 200},
       ]
+
+      const userData = {
+        ...user, 
+        transactions,
+        budget_data,
+        monthlyBudget : 2000,
+        spending : 1500,
+        balance : 500
+    
+      }
+  
 
 
   return (
@@ -33,7 +47,7 @@ function Home({ user }) {
                   <AddExpense />
               </div>
               <div >
-                  <Dashboard data={user} />
+                  <Dashboard data={userData} />
               </div>
               <div className='square-aspect'>
                   <Friends />

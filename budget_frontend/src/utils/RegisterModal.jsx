@@ -2,21 +2,22 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import api from '../api.js';
 
-export default function RegisterModal({ isOpen, onClose, onSave }){
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [password_2, setPassword_2] = useState('');
-    const [errors, setErrors] = useState({});
-    const [success, setSuccess] = useState(false);
+export default function RegisterModal({ isOpen, onClose, onOpenLogin }){
+    const [ username, setUsername ] = useState('');
+    const [ email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ password_2, setPassword_2 ] = useState('');
+    const [ errors, setErrors ] = useState({});
+    const [ success, setSuccess ] = useState(false);
+    const [ loading, setLoading ] = useState(false);
 
 
     const handleRegistration = async (e) => {
         e.preventDefault();
-        
+        setLoading(true)
         try {
             setErrors({})
-            if(password !== password_2){
+            if ( password !== password_2 ){
                 setErrors({ password : 'Passwords do not match' });
                 return; 
             }
@@ -31,9 +32,11 @@ export default function RegisterModal({ isOpen, onClose, onSave }){
                 ...prevError,
                 ...error.response.data}))
             console.log('Registration error:', errors)
-        }       
+        } finally {
+            setLoading(false)
+        }     
        
-        return
+        return;
     }
 
     return(
@@ -127,19 +130,35 @@ export default function RegisterModal({ isOpen, onClose, onSave }){
         
                                     <div className='flex justify-center'>
                                         <p>Already budgeting?</p>
-                                    <a href="#" className=" ml-4 text-blue-600 underline hover:text-gray-200 transition">Login</a>
+                                    <a href="#" 
+                                       className=" ml-4 text-blue-600 underline hover:text-gray-200 transition"
+                                       onClick={onOpenLogin}
+                                    >
+                                        Login
+                                        </a>
                                     </div>
 
-                                    {success && <div className='block w-full p-1 border border-green-600 rounded-xl bg-green-300 text-center'>Registered successfully</div> }
+                                    {success && <div className='block w-full p-1 border border-green-600 rounded-xl
+                                     bg-green-300 text-center text-green-700'>Registered successfully</div> }
                                     
                                     <div className='flex justify-center'>
+                                        {loading ?
+                                        <button
+                                        type='submit' 
+                                        className="px-4 py-2 rounded-xl bg-blue-300 text-white"
+                                        disabled
+                                        >
+                                            Please wait...
+                                        </button>
+                                        :
                                         <button
                                         type='submit' 
                                         className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
                                         >
                                             Register
-                                        </button>
-        
+                                        </button>            
+                                    
+                                        }
                                     </div>
         
                                 </form>

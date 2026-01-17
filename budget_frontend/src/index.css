@@ -21,6 +21,9 @@ html {
 nav{
     background : var(--navbar-color)
 }
+nav li:hover{
+    background : #F39F9F
+}
 
 .card{
     background : var(--card-background)

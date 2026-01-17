@@ -1,11 +1,26 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import LoginModal from '../utils/LoginModal'
-import RegisterModal from '../utils/RegisterModal'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import LoginModal from '../utils/LoginModal';
+import RegisterModal from '../utils/RegisterModal';
+import { useAuth } from '../AuthProvider';
 
-function Navbar({ user }) {
-  const [ isLoginOpen, setIsLoginOpen] =useState(false)
-  const [ isRegisterOpen, setIsRegisterOpen] =useState(false)
+function Navbar() {
+  const [ isLoginOpen, setIsLoginOpen ] =useState(false)
+  const [ isRegisterOpen, setIsRegisterOpen ] =useState(false)
+  const [ isMobileNavOpen, setIsMobileNavOpen ] = useState(false)
+
+  const { user , isAuthenticated, logout } = useAuth();
+
+  // Function to close Login card and open Regster
+  const onOpenRegister = () =>{
+    setIsLoginOpen(false);
+    setIsRegisterOpen(true)
+  }
+  // Function to close Register card and open Login 
+  const onOpenLogin = () =>{
+    setIsLoginOpen(true);
+    setIsRegisterOpen(false)
+  }
 
   return (
     <>
@@ -18,6 +33,7 @@ function Navbar({ user }) {
             <div className="hidden md:flex space-x-6 items-center">
                 {user ? (
                 <>
+                {/* logged user */}
                     <Link to='/' className="hover:text-gray-200 transition">Overview</Link>
                     <Link to='/profile' className="hover:text-gray-200 transition">Profile</Link>
                     <Link to='/' className="hover:text-gray-200 transition">Planner</Link>
@@ -25,32 +41,70 @@ function Navbar({ user }) {
                     <Link to='/' className="hover:text-gray-200 transition">History</Link>
 
                 
-                    <span className="ml-4 font-medium">Hi, {user.name}</span>
+                    <span className="ml-4 font-medium">Hi, {user.username}</span>
                 </>
                 ) : (
                 <>
+                {/* Default Navabr */}
                     <a onClick={() => setIsLoginOpen(true)} className="ml-4 hover:text-gray-200 transition">Login</a>
-                    <a onClick={() => setIsRegisterOpen(true)} className="ml-4 hover:text-gray-200 transition">Register</a>
+                    <a onClick={() => setIsRegisterOpen(true)} className="ml-4 hover:text-gray-200 transition">Register</a>  
                 </>
                 )}
             </div>
 
           {/* Mobile menu placeholder */}
           <div className="md:hidden">
-            <button className="focus:outline-none">☰</button>
+            {isMobileNavOpen?
+              <button
+              type="button"
+              onClick={()=> setIsMobileNavOpen(false)}
+              className="focus:outline-none"
+            >
+              <i className="fa-solid fa-x"></i>
+            </button>
+            :
+            <button 
+            onClick={() => setIsMobileNavOpen(true) }
+            className="focus:outline-none">
+              <i className="fa-solid fa-bars"></i>
+            </button>
+            }
           </div>
         </div>
+
+        {isMobileNavOpen && (
+          <div className="md:hidden">
+            <ul className="flex flex-col space-y-4 p-4">
+              <li className="flex justify-center py-3 rounded-lg mb-1">
+                <a onClick={() => setIsLoginOpen(true)} 
+                  className="hover:text-gray-200 transition text-lg cursor-pointer"
+                  >
+                  Login
+                  </a>
+              </li>
+              <li className='flex justify-center py-1 rounded-lg mb-3'>
+                <a onClick={() => setIsRegisterOpen(true)} 
+                className="ml-4 hover:text-gray-200 transition text-lg cursor-pointer"
+                >
+                  Register
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
       </nav>
+
+      
 
     <LoginModal 
     isOpen={isLoginOpen}
     onClose={() => setIsLoginOpen(false)}
-    onSave={NaN}            
+    onOpenRegister={onOpenRegister}           
     /> 
     <RegisterModal 
     isOpen={isRegisterOpen}
-    onClose={() => setIsRegisterOpen(false)}
-    onSave={NaN}            
+    onClose={() => setIsRegisterOpen(false)}            
+    onOpenLogin={onOpenLogin}
     />       
     </>
   )
