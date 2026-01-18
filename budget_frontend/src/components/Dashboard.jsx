@@ -31,7 +31,7 @@ function Dashboard({ data }){
 
   {/* Detail Button */}
   <button className="flex items-center justify-center gap-2 mt-6 px-6 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:border-gray-300 transition">
-    <p>View Details</p>
+    View Details
     <i className="fa-solid fa-caret-down text-gray-600"></i>
   </button>
 </div>

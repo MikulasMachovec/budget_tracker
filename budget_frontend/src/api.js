@@ -1,7 +1,7 @@
 import axios from "axios";
 import { href } from "react-router-dom";
 
-const BASE_URL = 'http://127.0.0.1:8000'
+const BASE_URL = import.meta.env.VITE_BACKEND_API
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -26,7 +26,7 @@ api.interceptors.response.use(
                 if(!refresh) return Promise.reject(error);
 
             try {
-                const res = await axios.post('http://127.0.0.1:8000/api/account/token/refresh/', {refresh});
+                const res = await axios.post(`${BASE_URL}/api/account/token/refresh/`, {refresh});
                 const newAccess = res.data.access;
                 localStorage.setItem('accessToken', newAccess); 
                 

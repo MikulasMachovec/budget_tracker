@@ -39,6 +39,7 @@ function AuthProvider({ children }) {
         setAccessToken(null);
         setRefreshToken(null);
         setUser(null);
+        console.log('Logout successful.')
     }
 
     useEffect(()=>{
@@ -48,7 +49,6 @@ function AuthProvider({ children }) {
 
                 try {
                     const response = await api.get("/api/account/user/")
-                    console.log('User data ===>', response.data)
                     setUser(response.data)
                 } catch (error) {
                     console.log('Error',error.message)

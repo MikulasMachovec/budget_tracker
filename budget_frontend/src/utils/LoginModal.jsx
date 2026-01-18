@@ -26,7 +26,7 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
 
             await login(response.data)
 
-            console.log('Login seccessful.')
+            console.log('Login successful.')
             redirect('/')
             onClose();
         } catch (err) {

@@ -7,5 +7,6 @@ urlpatterns = [
 
     # Base API endpoint
     path('api/account/', include('accounts.urls')),
+    path('api/expenses/', include('expenses.urls')),
   
 ]

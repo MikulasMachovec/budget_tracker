@@ -13,7 +13,7 @@ function MonthAndYear() {
           <i className="fa-solid fa-arrow-left"></i>
         </button>
 
-        <p className="font-semibold text-xl">October</p>
+        <p className="font-semibold text-xl">January</p>
 
         <button className="hover:text-blue-600 transition">
           <i className="fa-solid fa-arrow-right"></i>
@@ -29,7 +29,7 @@ function MonthAndYear() {
           <i className="fa-solid fa-arrow-left text-sm"></i>
         </button>
 
-        <p className="font-medium text-base">2025</p>
+        <p className="font-medium text-base">2026</p>
 
         <button className="hover:text-blue-600 transition">
           <i className="fa-solid fa-arrow-right text-sm"></i>
