@@ -5,7 +5,7 @@ from .models import User
 class CustomUserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These help you see more info in the list view.
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'is_admin')
+    list_display = ('id','email', 'username', 'first_name', 'last_name', 'is_staff', 'is_admin')
     
     # Fields to filter by in the right sidebar
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'is_admin')

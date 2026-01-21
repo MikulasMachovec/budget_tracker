@@ -2,28 +2,32 @@ from django.db import models
 from django.db.models import Sum
 from decimal import Decimal
 from django.utils import timezone
+from django.db.models import Q
 
-from budget_backend.accounts.models import User
+from accounts.models import User
 
-class Budget(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets')
-    budget_name = models.CharField(max_length=100)
+#Previous named Budget
+
+class Category(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
+    category_name = models.CharField(max_length=100)
     month = models.DateField(default=timezone.now)
-    total_budget = models.DecimalField(max_digits=10, decimal_places=2)
-    is_unbudgeted = models.BooleanField(default=False)
+    alocated_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_uncategorized = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-month']
         constraints = [
+            # Ensure unique category (example: not to have 2 categories named food)
             models.UniqueConstraint(
-                fields=['user', 'month', 'budget_name'],
-                name='unique_budget_per_month'
+                fields=['user', 'month', 'category_name'],
+                name='unique_category_per_month'
             ),
             models.UniqueConstraint(
                 fields=['user', 'month'],
-                condition=Q(is_unbudgeted=True),
-                name='unique_unbudgeted_budget_per_month'
+                condition=Q(is_uncategorized=True), 
+                name='unique_uncategorized_category_per_month'
             )
         ]
 
@@ -33,7 +37,7 @@ class Budget(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.budget_name} - {self.month.strftime('%B %Y')}"
+        return f"{self.category_name} - {self.month.strftime('%B %Y')}"
 
     @property
     def spent_amout(self) -> Decimal:
@@ -42,30 +46,33 @@ class Budget(models.Model):
         )['total'] or Decimal(0.00)
     
     @property
-    def remaining_budget(self) -> Decimal:
-        return self.total_budget - self.spent_amout
+    def remaining_amount(self) -> Decimal:
+        return self.alocated_amount - self.spent_amout
     
     @property
-    def is_over_budget(self) -> bool:
-        return self.remaining_budget < 0
+    def is_over_spent(self) -> bool:
+        return self.remaining_amount < 0
 
-def get_unbudgeted_budget(user, date):
+def get_uncategorized_spending(user, date):
+    # TEST ONLY 
+    user = User.objects.get(id=8)
+
     month_start = date.replace(day=1)
 
-    budget, _ = Budget.objects.get_or_create(
+    category, _ = Category.objects.get_or_create(
         user=user,
         month=month_start,
-        is_unbudgeted=True,
+        is_uncategorized=True,
         defaults={
-            "budget_name": "Unbudgeted",
-            "total_budget": 0
+            "category_name": "Uncategorized",
+            "alocated_amount": 0
         }
     )
-    return budget
+    return category
 
 
 class Expense(models.Model):
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name='expenses')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='expenses')
     expense_name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(default=timezone.now)
