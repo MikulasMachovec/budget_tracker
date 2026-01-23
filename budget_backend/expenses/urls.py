@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import CreateExpenseView, CreateCategoryView
+from .views import ExpenseViewSet, CategoryViewSet
 
 #PATH => api/expenses/
 
 urlpatterns = [
-    path('create_expense/', CreateExpenseView.as_view(), name='create_expense'),
-    path('create_category/', CreateCategoryView.as_view(), name='create_category'),
+    path('expenses/', ExpenseViewSet.as_view({'get': 'list','post': 'create'}), name='create_expense'),
+    path('categories/', CategoryViewSet.as_view({'get': 'list', 'post': 'create'}), name='category-list-create')
+
 ]

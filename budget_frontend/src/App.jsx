@@ -5,10 +5,12 @@ import Navbar from './components/Navbar.jsx'
 import Profile from './pages/Profile.jsx'
 import Footer from './components/Footer.jsx'
 import AuthProvider from './AuthProvider.jsx'
+import AppDataProvider from './AppDataProvider.jsx'
 
 function App() {
   return (
     <>
+      <AppDataProvider>
       <AuthProvider>
           <Navbar />
             <main className='main-content'>
@@ -19,7 +21,8 @@ function App() {
             
             </main>
           <Footer />
-      </AuthProvider>  
+          </AuthProvider>
+        </AppDataProvider>
     </>
   )
 }

@@ -25,7 +25,6 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
             const response = await api.post('/api/account/token/', userData)
 
             await login(response.data)
-
             console.log('Login successful.')
             redirect('/')
             onClose();

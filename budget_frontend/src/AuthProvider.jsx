@@ -1,10 +1,14 @@
 import {useState, useContext, createContext, useEffect} from 'react'
 import api from './api';
 
+import { useAppData } from './AppDataProvider';
+
 // Create context
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
+    const { loadUserData, clearUserData } = useAppData();
+
     const [user, setUser] = useState(null)
     const [accessToken, setAccessToken] = useState( 
         () => localStorage.getItem('accessToken')
@@ -29,6 +33,9 @@ function AuthProvider({ children }) {
 
         const response = await api.get("/api/account/user/")
         setUser(response.data)
+
+        // load user data
+        loadUserData(access);
     }
 
     // Logout
@@ -39,6 +46,7 @@ function AuthProvider({ children }) {
         setAccessToken(null);
         setRefreshToken(null);
         setUser(null);
+        clearUserData();
         console.log('Logout successful.')
     }
 
@@ -50,6 +58,7 @@ function AuthProvider({ children }) {
                 try {
                     const response = await api.get("/api/account/user/")
                     setUser(response.data)
+                    await loadUserData(accessToken);
                 } catch (error) {
                     console.log('Error',error.message)
                     logout()

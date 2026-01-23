@@ -54,9 +54,6 @@ class Category(models.Model):
         return self.remaining_amount < 0
 
 def get_uncategorized_spending(user, date):
-    # TEST ONLY 
-    user = User.objects.get(id=8)
-
     month_start = date.replace(day=1)
 
     category, _ = Category.objects.get_or_create(

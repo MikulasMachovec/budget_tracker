@@ -5,11 +5,14 @@ import AddExpense from '../components/AddExpense.jsx';
 import Friends from '../components/Friends.jsx';
 import Budgets from '../components/Budgets.jsx';
 import { useAuth } from '../AuthProvider';
+import { useAppData } from '../AppDataProvider';
 
 
 function Home() {
 
   const { user } = useAuth();
+  const {categories, expenses} = useAppData();
+  console.log('User Data --->', {categories, expenses})
   const transactions = [
     { id: 1, description: 'Groceries', amount: -50, date: '2025-10-10' },
     { id: 2, description: 'Salary', amount: 3000, date: '2025-10-01' },

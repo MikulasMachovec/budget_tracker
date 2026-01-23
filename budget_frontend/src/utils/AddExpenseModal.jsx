@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useAppData } from '../AppDataProvider';
 
 export default function AddExpenseModal({ isOpen, onClose, onSave }) {
-  const [formData, setFormData] = useState({
-    category: '',
-    description: '',
-    amount: '',
-    date: '',
-  });
+  const [expenseName, setExpenseName] = useState('');
+  const [category, setCategory] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const {categories} = useAppData();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
-    setFormData({ category: '', description: '', amount: '', date: '' });
+    setLoading(true);
+    setError('');
+
+    try {
+      const expenseData = {
+        expense_name: expenseName, 
+        category, 
+        amount, 
+        date};
+      const response = await api.post('/api/expenses/expenses/', expenseData);
+      console.log('Response --->', response)
+    } catch (error) {
+      setError(
+        error.response?.data?.message || 'Something happend while saving expense'
+      )
+    } finally{
+      setLoading(false)
+    }
+
+
     onClose();
   };
 
@@ -41,45 +55,55 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
             <h2 className="text-xl font-semibold mb-4 text-center">Add New Expense</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Name</label>
+                <label htmlFor='expenseName' className="block text-sm font-medium text-gray-700">Name</label>
                 <input
                   type="text"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
+                  name="expenseName"
+                  value={expenseName}
+                  onChange={(e) => setExpenseName(e.target.value)}
                   required
                   className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
+                <label htmlFor='category' className="block text-sm font-medium text-gray-700">Description</label>
+                <select
+                  name="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
                   className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
-                />
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((cat) => {
+                    <option key={cat.id} value={cat.id}>
+                      {cat.category_name}
+                    </option>
+                  })}
+                </select>
               </div>
+
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Amount</label>
+                  <label htmlFor='amount' className="block text-sm font-medium text-gray-700">Amount</label>
                   <input
                     type="number"
                     name="amount"
-                    value={formData.amount}
-                    onChange={handleChange}
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     required
                     step="0.01"
                     className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
                   />
                 </div>
+
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">Date</label>
+                  <label htmlFor='date' className="block text-sm font-medium text-gray-700">Date</label>
                   <input
                     type="date"
                     name="date"
-                    value={formData.date}
-                    onChange={handleChange}
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                     required
                     className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
                   />

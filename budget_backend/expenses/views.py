@@ -1,6 +1,6 @@
-from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 from .models import Expense, Category
 from .serializers import  CategorySerializer, ExpenseSerializer
 from django.contrib.auth import get_user_model
@@ -8,15 +8,35 @@ from accounts.models import User
 User = get_user_model()
 
 # Create Expense
-class CreateExpenseView(generics.CreateAPIView):
-    queryset = Expense.objects.all()
+class ExpenseViewSet(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
-class CreateCategoryView(generics.CreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [AllowAny]
+    def get_queryset(self):
+        return Expense.objects.filter(
+            category__user=self.request.user
+        )
+    
     def perform_create(self, serializer):
-        user = User.objects.get(id=8)  # 👈 hard-coded test user
-        serializer.save(user=user)
+       category = serializer.validate_data.get('category')
+
+       if category is None:
+           category = Category.get_uncategorized_spending(
+               user= self.request.user,
+               date=serializer.validated_data.get('date')
+           )
+
+       if category.user != self.request.user:
+           raise PermissionDenied("Not your category")
+       
+       serializer.save(category=category)
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
