@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <AppDataProvider>
-      <AuthProvider>
+        <AuthProvider>
           <Navbar />
             <main className='main-content'>
                 <Routes>
@@ -21,8 +21,8 @@ function App() {
             
             </main>
           <Footer />
-          </AuthProvider>
-        </AppDataProvider>
+        </AuthProvider>
+      </AppDataProvider>
     </>
   )
 }

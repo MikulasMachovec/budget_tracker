@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../AuthProvider';
 
 function MobileNavbar({
   isOpen,
@@ -7,7 +8,9 @@ function MobileNavbar({
   onOpenRegister,
   user,
 }) {
+
   if (!isOpen) return null;
+  const { logout } = useAuth();
 
   return (
     <div className="md:hidden">

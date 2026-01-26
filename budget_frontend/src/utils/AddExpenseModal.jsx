@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppData } from '../AppDataProvider';
+import api from '../api';
 
 export default function AddExpenseModal({ isOpen, onClose, onSave }) {
   const [expenseName, setExpenseName] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryID, setCategoryID ] = useState('');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const {categories} = useAppData();
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,15 +21,18 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
     try {
       const expenseData = {
         expense_name: expenseName, 
-        category, 
+        category_id : categoryID, 
         amount, 
-        date};
+        date
+      };
+      console.log('expenseData', expenseData)
       const response = await api.post('/api/expenses/expenses/', expenseData);
       console.log('Response --->', response)
     } catch (error) {
       setError(
         error.response?.data?.message || 'Something happend while saving expense'
       )
+      console.log(error)
     } finally{
       setLoading(false)
     }
@@ -70,16 +74,16 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
                 <label htmlFor='category' className="block text-sm font-medium text-gray-700">Description</label>
                 <select
                   name="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                  value={categoryID}
+                  onChange={(e) => setCategoryID(e.target.value)}
                   className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
                 >
                   <option value="">Select a category</option>
-                  {categories.map((cat) => {
+                  {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.category_name}
                     </option>
-                  })}
+                  ))}
                 </select>
               </div>
 

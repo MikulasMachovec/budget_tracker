@@ -11,32 +11,21 @@ import { useAppData } from '../AppDataProvider';
 function Home() {
 
   const { user } = useAuth();
-  const {categories, expenses} = useAppData();
-  console.log('User Data --->', {categories, expenses})
-  const transactions = [
-    { id: 1, description: 'Groceries', amount: -50, date: '2025-10-10' },
-    { id: 2, description: 'Salary', amount: 3000, date: '2025-10-01' },
-    { id: 3, description: 'Utilities', amount: -120, date: '2025-10-08' },
-  ]
-
-  const budget_data = [
-      {id:1, name: 'Groceries', used: 250, max_amount: 500},
-      {id:2, name: 'Car', used: 100, max_amount: 3500},
-      {id:3, name: 'Fun', used: 175, max_amount: 200},
-      ]
-
+  const { categories, expenses } = useAppData();
+  console.log(expenses)
+  console.log(categories)
+  
       const userData = {
         ...user, 
-        transactions,
-        budget_data,
+        expenses,
+        categories,
         monthlyBudget : 2000,
         spending : 1500,
         balance : 500
     
       }
+      console.log('userData', userData)
   
-
-
   return (
     <>
     <main className="max-w-6xl p-4 mx-auto">
@@ -56,7 +45,7 @@ function Home() {
               </div>
           </div>
 
-        <Budgets budget={budget_data} />
+        <Budgets budget={categories} />
 
       </main>
     </>

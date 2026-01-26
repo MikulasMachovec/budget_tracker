@@ -23,7 +23,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'id',
             'category_name',
             'month',
-            'alocated_amount',
+            'allocated_amount',
             'spent_amount',
             'remaining_amount',
             'is_over_spent',
@@ -50,6 +50,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         if category is None:
             category = get_uncategorized_spending(user, date)
 
+        print('serializer validated data',category, validated_data)
         return Expense.objects.create(
             category=category,
             **validated_data

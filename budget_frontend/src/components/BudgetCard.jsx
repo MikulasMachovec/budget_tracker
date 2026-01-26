@@ -3,15 +3,14 @@ import CreateBudgetModal from '../utils/CreateBudgetModal'
 import ProgressBar from '../utils/ProgressBar'
 
 function BudgetCard({ data }){
-    const { id, name, used, max_amount } = data
-
+    const { id, category_name, spent_amount, allocated_amount } = data
     return (
     <div className="bg-white shadow-md rounded-xl p-5 flex flex-col gap-3 hover:shadow-lg transition">
 
   {/* Header row */}
   <div className="flex items-center justify-between">
     {/* Left side — name */}
-    <h3 className="text-lg font-semibold text-gray-800 border-b border-b-gray-300">{data.name}</h3>
+    <h3 className="text-lg font-semibold text-gray-800 border-b border-b-gray-300">{category_name}</h3>
     
 
     {/* Right side — actions */}
@@ -24,12 +23,12 @@ function BudgetCard({ data }){
   {/* Progress info */}
   <div className="flex flex-col gap-2">
     <div className="flex justify-between text-sm text-gray-600">
-      <span>Used: {used} €</span>
-      <span>Limit: {max_amount} €</span>
+      <span>Used: {spent_amount} €</span>
+      <span>Limit: {allocated_amount} €</span>
     </div>
 
     {/* Progress bar */}
-    <ProgressBar used={used} max_amount={max_amount} />
+    <ProgressBar used={spent_amount} max_amount={allocated_amount} />
   </div>
 
 </div>

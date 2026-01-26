@@ -12,7 +12,7 @@ class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
     category_name = models.CharField(max_length=100)
     month = models.DateField(default=timezone.now)
-    alocated_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    allocated_amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_uncategorized = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -40,14 +40,14 @@ class Category(models.Model):
         return f"{self.category_name} - {self.month.strftime('%B %Y')}"
 
     @property
-    def spent_amout(self) -> Decimal:
-        return self.expense.aggregate(
+    def spent_amount(self) -> Decimal:
+        return self.expenses.aggregate(
             total=Sum('amount')
         )['total'] or Decimal(0.00)
     
     @property
     def remaining_amount(self) -> Decimal:
-        return self.alocated_amount - self.spent_amout
+        return self.allocated_amount - self.spent_amout
     
     @property
     def is_over_spent(self) -> bool:
@@ -62,7 +62,7 @@ def get_uncategorized_spending(user, date):
         is_uncategorized=True,
         defaults={
             "category_name": "Uncategorized",
-            "alocated_amount": 0
+            "allocated_amount": 0
         }
     )
     return category
