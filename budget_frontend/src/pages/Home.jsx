@@ -4,8 +4,8 @@ import Dashboard from '../components/Dashboard.jsx';
 import AddExpense from '../components/AddExpense.jsx';
 import Friends from '../components/Friends.jsx';
 import Budgets from '../components/Budgets.jsx';
-import { useAuth } from '../AuthProvider';
-import { useAppData } from '../AppDataProvider';
+import { useAuth } from '../providers/AuthProvider';
+import { useAppData } from '../providers/AppDataProvider';
 
 
 function Home() {

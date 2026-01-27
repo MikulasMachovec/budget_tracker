@@ -4,8 +4,8 @@ import Home from './pages/Home.jsx'
 import Navbar from './components/Navbar.jsx'
 import Profile from './pages/Profile.jsx'
 import Footer from './components/Footer.jsx'
-import AuthProvider from './AuthProvider.jsx'
-import AppDataProvider from './AppDataProvider.jsx'
+import AuthProvider from './providers/AuthProvider.jsx'
+import AppDataProvider from './providers/AppDataProvider.jsx'
 
 function App() {
   return (

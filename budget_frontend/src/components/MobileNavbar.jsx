@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../AuthProvider';
+import { useAuth } from '../providers/AuthProvider';
 
 function MobileNavbar({
   isOpen,

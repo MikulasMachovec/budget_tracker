@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import CreateBudgetModal from '../utils/CreateBudgetModal'
 import BudgetCard from './BudgetCard'
+import { useAppData } from '../providers/AppDataProvider';
 
 
-function Budgets({ budget }){
+function Budgets(){
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const handleSaveBudget = (e) =>{
-        console.log('New expense', e.data)
-        }
+   const { categories, expenses } = useAppData();
 
     return (
         <div className="card flex flex-col items-center justify-center p-6 rounded-xl">
@@ -22,8 +21,12 @@ function Budgets({ budget }){
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' >
 
                     {/* Budget cards */}
-                    {budget.map((b) => (
-                        <BudgetCard key={b.id} data={b} />
+                    {categories.map((c) => (
+                        <BudgetCard 
+                        key={c.id} 
+                        category={c} 
+                        expenses={expenses}
+                        />
                     ))}
 
                     <div
@@ -37,7 +40,6 @@ function Budgets({ budget }){
         <CreateBudgetModal
          isOpen={isModalOpen}
          onClose = {() => setIsModalOpen(false)}
-         onSave = {handleSaveBudget}
          />
 
         </div>

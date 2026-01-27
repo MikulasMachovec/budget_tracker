@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useAppData } from '../AppDataProvider';
+import { useAppData } from '../providers/AppDataProvider';
 import api from '../api';
 
 export default function AddExpenseModal({ isOpen, onClose, onSave }) {
@@ -11,7 +11,7 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const {categories} = useAppData();
+  const {categories, addExpense} = useAppData();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
         date
       };
       console.log('expenseData', expenseData)
-      const response = await api.post('/api/expenses/expenses/', expenseData);
+      await addExpense(expenseData)
       console.log('Response --->', response)
     } catch (error) {
       setError(
@@ -77,6 +77,7 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
                   value={categoryID}
                   onChange={(e) => setCategoryID(e.target.value)}
                   className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
+                  required
                 >
                   <option value="">Select a category</option>
                   {categories.map((cat) => (

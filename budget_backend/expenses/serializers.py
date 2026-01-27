@@ -35,7 +35,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         queryset=Category.objects.all(),
         required=False,
         allow_null=True,
-        write_only=True
+        write_only=False
     )
 
     class Meta:
@@ -50,7 +50,6 @@ class ExpenseSerializer(serializers.ModelSerializer):
         if category is None:
             category = get_uncategorized_spending(user, date)
 
-        print('serializer validated data',category, validated_data)
         return Expense.objects.create(
             category=category,
             **validated_data

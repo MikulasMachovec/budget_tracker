@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import api from './api';
+import { createContext, useContext, useState, useEffect } from "react";
+import api from '../api';
 
 
 const AppDataContext = createContext();
@@ -32,11 +32,24 @@ function AppDataProvider({ children }) {
 
     };
 
+    const addExpense = async(expenseData)=> {
+        try {
+            const response = await api.post('/api/expenses/expenses/', expenseData);
+
+            setExpenses((prev) => [...prev, response.data])
+
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+
     const clearUserData = () => {
         setCategories([]);
         setExpenses([]);
     }
 
+    
     return (
         <AppDataContext.Provider
         value={{
@@ -44,6 +57,7 @@ function AppDataProvider({ children }) {
             expenses,
             setCategories,
             setExpenses,
+            addExpense,
             loadUserData, 
             clearUserData
         }}

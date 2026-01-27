@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LoginModal from '../utils/LoginModal';
 import RegisterModal from '../utils/RegisterModal';
-import { useAuth } from '../AuthProvider';
+import { useAuth } from '../providers/AuthProvider';
 import MobileNavbar from './MobileNavbar';
 
 function Navbar() {

@@ -1,5 +1,5 @@
 import {useState, useContext, createContext, useEffect} from 'react'
-import api from './api';
+import api from '../api';
 
 import { useAppData } from './AppDataProvider';
 
