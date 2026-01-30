@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useAppData } from '../providers/AppDataProvider';
 import api from '../api';
 
-export default function AddExpenseModal({ isOpen, onClose, onSave }) {
+export default function AddExpenseModal({ isOpen, onClose }) {
   const [expenseName, setExpenseName] = useState('');
   const [categoryID, setCategoryID ] = useState('');
   const [amount, setAmount] = useState('');
@@ -25,9 +25,7 @@ export default function AddExpenseModal({ isOpen, onClose, onSave }) {
         amount, 
         date
       };
-      console.log('expenseData', expenseData)
       await addExpense(expenseData)
-      console.log('Response --->', response)
     } catch (error) {
       setError(
         error.response?.data?.message || 'Something happend while saving expense'

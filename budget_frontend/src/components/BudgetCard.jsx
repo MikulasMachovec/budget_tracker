@@ -1,14 +1,12 @@
 import React, { useMemo, useState } from 'react'
 import ProgressBar from '../utils/ProgressBar'
+import { useAppData } from '../providers/AppDataProvider';
 
 function BudgetCard({ category, expenses }){
     const { id, category_name, allocated_amount } = category
    
-    const spentAmount = useMemo(()=>{
-      return expenses
-        .filter(e => e.category_id === category.id)
-        .reduce(( sum , e ) => sum + Number(e.amount), 0);
-    },[expenses, id])
+    const { spentByCategory, deleteCategory } = useAppData();
+	const spentAmount = spentByCategory[category.id] || 0;
 
     return (
     <div className="bg-white shadow-md rounded-xl p-5 flex flex-col gap-3 hover:shadow-lg transition">
@@ -21,8 +19,12 @@ function BudgetCard({ category, expenses }){
 
     	{/* Right side — actions button */}
 		<div className="flex items-center gap-3 text-sm">
+			{/* TODO: add edit feature */}
 			<button className="text-blue-600 hover:text-blue-800 font-medium">Edit</button>
-			<button className="text-red-600 hover:text-red-800 font-medium">Delete</button>
+			<button 
+				className="text-red-600 hover:text-red-800 font-medium"
+				onClick={()=> deleteCategory(category.id)}
+			>Delete</button>
 		</div>
   	</div>
 
@@ -37,8 +39,6 @@ function BudgetCard({ category, expenses }){
 		<ProgressBar used={spentAmount} max_amount={allocated_amount} />
   	</div>
 	
-	{/* Detail of category */}
-
 
 </div>
 

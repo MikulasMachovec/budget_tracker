@@ -12,9 +12,7 @@ function Home() {
 
   const { user } = useAuth();
   const { categories, expenses } = useAppData();
-  console.log(expenses)
-  console.log(categories)
-  
+    
       const userData = {
         ...user, 
         expenses,
@@ -24,7 +22,7 @@ function Home() {
         balance : 500
     
       }
-      console.log('userData', userData)
+      
   
   return (
     <>

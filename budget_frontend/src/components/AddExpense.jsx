@@ -4,11 +4,6 @@ import AddExpenseModal from '../utils/AddExpenseModal'
 function AddExpense() {
   const [ isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSaveExpense = (data) =>{
-    console.log('New expense',data)
-    //TODO
-  }
-
   return ( 
     <>
     <div className="card flex flex-col items-center justify-center p-6 mt-4 rounded-xl transition hover:scale-105">
@@ -21,7 +16,6 @@ function AddExpense() {
       <AddExpenseModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveExpense}
       />
       
     </>

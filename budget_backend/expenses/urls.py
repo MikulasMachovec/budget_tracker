@@ -1,10 +1,12 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 from .views import ExpenseViewSet, CategoryViewSet
 
 #PATH => api/expenses/
 
-urlpatterns = [
-    path('expenses/', ExpenseViewSet.as_view({'get': 'list','post': 'create'}), name='create_expense'),
-    path('categories/', CategoryViewSet.as_view({'get': 'list', 'post': 'create'}), name='category-list-create')
+router = DefaultRouter()
 
-]
+router.register(r'expenses', ExpenseViewSet, basename='expenses')
+router.register(r'categories', CategoryViewSet, basename='category')
+
+urlpatterns = router.urls

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect,useMemo } from "react";
 import api from '../api';
 
 
@@ -44,6 +44,49 @@ function AppDataProvider({ children }) {
         }
     }
 
+    const createCategory = async(newCategoryData)=>{
+        try {
+            const response = await api.post('/api/expenses/categories/', newCategoryData);
+            setCategories(prev => [...prev, response.data])
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const deleteCategory = async(categoryId) => {
+        try {
+            const response = await api.delete(`/api/expenses/categories/${categoryId}/`)
+            setCategories(prev => prev.filter(cat => cat.id !== categoryId));
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // TODO: add PUT(edit) category
+
+    const getMonthKey = (date) => {
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}`;
+    };
+
+    const currentMonth = getMonthKey(new Date())
+
+    const spentByCategory = useMemo(()=>{
+        return expenses.reduce(( acc , e ) => {
+            // ignore broken data
+            if (!e.category_id || !e.date) return acc;
+            // ignore expense not in this month
+            if (getMonthKey(e.date) !== currentMonth) return acc;
+            // normalize category id
+            const catId = Number(e.category_id);
+            // accumulate
+            acc[catId] = (acc[catId] || 0) + Number(e.amount || 0);
+
+            return acc;
+        },{});
+      },[expenses, currentMonth])
+
+
     const clearUserData = () => {
         setCategories([]);
         setExpenses([]);
@@ -55,9 +98,12 @@ function AppDataProvider({ children }) {
         value={{
             categories,
             expenses,
+            spentByCategory,
             setCategories,
             setExpenses,
             addExpense,
+            createCategory,
+            deleteCategory,
             loadUserData, 
             clearUserData
         }}
