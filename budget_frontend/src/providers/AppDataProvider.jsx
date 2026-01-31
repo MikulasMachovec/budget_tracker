@@ -62,7 +62,18 @@ function AppDataProvider({ children }) {
         }
     }
 
-    // TODO: add PUT(edit) category
+    const updateCategory = async (categoryId, categoryData) => {
+        try {
+            const response = await api.put(`/api/expenses/categories/${categoryId}/`, categoryData)
+            setCategories(prev => 
+                prev.map(cat => 
+                    cat.id === categoryId ? response.data : cat
+                )
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 
     const getMonthKey = (date) => {
         const d = new Date(date);
@@ -104,6 +115,7 @@ function AppDataProvider({ children }) {
             addExpense,
             createCategory,
             deleteCategory,
+            updateCategory,
             loadUserData, 
             clearUserData
         }}

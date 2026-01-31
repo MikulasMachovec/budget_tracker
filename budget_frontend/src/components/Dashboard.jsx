@@ -13,6 +13,10 @@ function Dashboard({ data }){
     {/* Income */}
     <div className="p-6 w-40 text-center bg-gradient-to-b from-green-50 to-green-100 rounded-xl shadow-sm hover:shadow-md hover:scale-105 transition">
       <p className="text-sm font-medium text-green-700">Income</p>
+      {/* 
+      TODO: optional make this clickable so it can be manually set up
+          and then it can be remate to income/spending/balance
+      */}
       <p className="text-2xl font-bold text-green-900">{data.monthlyBudget}€</p>
     </div>
 

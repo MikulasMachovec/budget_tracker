@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react'
 import ProgressBar from '../utils/ProgressBar'
+import BudgetModal from '../utils/BudgetModal'
 import { useAppData } from '../providers/AppDataProvider';
 
 function BudgetCard({ category, expenses }){
     const { id, category_name, allocated_amount } = category
+	const [isModalOpen, setIsModalOpen] = useState(false)
    
     const { spentByCategory, deleteCategory } = useAppData();
 	const spentAmount = spentByCategory[category.id] || 0;
@@ -19,8 +21,21 @@ function BudgetCard({ category, expenses }){
 
     	{/* Right side — actions button */}
 		<div className="flex items-center gap-3 text-sm">
-			{/* TODO: add edit feature */}
-			<button className="text-blue-600 hover:text-blue-800 font-medium">Edit</button>
+			<button 
+			className="text-blue-600 hover:text-blue-800 font-medium"
+			onClick={()=> setIsModalOpen(true)}
+			>
+				Edit
+				
+			</button>
+
+			<BudgetModal
+				isOpen={isModalOpen}
+				onClose = {() => setIsModalOpen(false)}
+				category={category}
+			/>
+
+
 			<button 
 				className="text-red-600 hover:text-red-800 font-medium"
 				onClick={()=> deleteCategory(category.id)}
@@ -38,8 +53,7 @@ function BudgetCard({ category, expenses }){
 		{/* Progress bar */}
 		<ProgressBar used={spentAmount} max_amount={allocated_amount} />
   	</div>
-	
-
+	  
 </div>
 
   );

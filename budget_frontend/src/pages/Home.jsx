@@ -13,6 +13,8 @@ function Home() {
   const { user } = useAuth();
   const { categories, expenses } = useAppData();
     
+  // TODO: add filter to expensis so it can filter and calculate spending
+
       const userData = {
         ...user, 
         expenses,

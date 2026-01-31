@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CreateBudgetModal from '../utils/CreateBudgetModal'
+import BudgetModal from '../utils/BudgetModal'
 import BudgetCard from './BudgetCard'
 import { useAppData } from '../providers/AppDataProvider';
 
@@ -21,7 +21,7 @@ function Budgets(){
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' >
 
                     {/* Budget cards */}
-                    {categories.map((c) => (
+                    {categories?.map((c) => (
                         <BudgetCard 
                         key={c.id} 
                         category={c} 
@@ -37,7 +37,7 @@ function Budgets(){
                     </div>
                 </div>
             </div>
-        <CreateBudgetModal
+        <BudgetModal
          isOpen={isModalOpen}
          onClose = {() => setIsModalOpen(false)}
          />

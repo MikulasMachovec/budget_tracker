@@ -1,29 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppData } from '../providers/AppDataProvider';
 
-export default function CreateBudgetModal({isOpen, onClose, }){
+export default function BudgetModal({isOpen, onClose, category=null}){
     const [ categoryName, setCategoryName ] = useState('')
     const [ amount, setAmount ] = useState('')
     const [ monthlyRepeat, setMonthlyRepeat] = useState(false)
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [ loading, setLoading] = useState(false);
+    const [ error, setError] = useState('');
+    
 
-    const { createCategory } = useAppData();
+    const { createCategory, updateCategory } = useAppData();
+
+    const isEditMode = Boolean(category)
     
     const handleSubmit = async (e) =>{
         e.preventDefault();
         setLoading(true)
         setError('')
+
+        const categoryData = {
+            category_name : categoryName, 
+            allocated_amount : amount, 
+            monthly_reccurence: monthlyRepeat}
+
         try {
-            const NewCategoryData = {
-                category_name : categoryName, 
-                allocated_amount : amount, 
-                monthlyRepeat}
-            await createCategory(NewCategoryData)
-            console.log(NewCategoryData)
+            if (isEditMode){
+                await updateCategory(category.id, categoryData)
+            } else {
+                await createCategory(categoryData)
+            }
+            onClose();
         } catch (error) {
-            error.response?.data?.message || 'Something happend creating category'
+            error.response?.data?.message || 'Something went wrong'
             console.log(error)
     
         }finally{
@@ -33,6 +42,18 @@ export default function CreateBudgetModal({isOpen, onClose, }){
             onClose()
         }
 
+    useEffect(() => {
+        if (category) {
+            console.log(category)
+            setCategoryName(category.category_name);
+            setAmount(category.allocated_amount);
+            setMonthlyRepeat(category.monthly_reccurence);
+        } else {
+            setCategoryName('');
+            setAmount('');
+            setMonthlyRepeat(false);
+        }
+    }, [category, isOpen])
 
     return(
         <AnimatePresence>
@@ -49,7 +70,9 @@ export default function CreateBudgetModal({isOpen, onClose, }){
                     exit={{scale:0.9, opacity: 0 }}
                     >
 
-                    <h2 className="text-xl font-semibold mb-4 text-center">Create Budget</h2>
+                    <h2 className="text-xl font-semibold mb-4 text-center">
+                        {isEditMode ? `Edit category ${category.category_name}` : 'Create Category'}
+                        </h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label htmlFor='category' className="block text-sm font-medium text-gray-700">Name</label>
@@ -107,7 +130,7 @@ export default function CreateBudgetModal({isOpen, onClose, }){
                               type="submit"
                               className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
                             >
-                              Save
+                              {isEditMode ? 'Update' : 'Save' }
                             </button>
                         </div>
                     </form>

@@ -27,6 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'spent_amount',
             'remaining_amount',
             'is_over_spent',
+            'monthly_reccurence',
         ]
 
 
