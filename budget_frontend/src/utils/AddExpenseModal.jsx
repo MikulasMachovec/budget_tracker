@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useAppData } from '../providers/AppDataProvider';
 import api from '../api';
 
+// TODO: needs to me edited like budget so in can be reuse for edit expenses
+
 export default function AddExpenseModal({ isOpen, onClose }) {
   const [expenseName, setExpenseName] = useState('');
   const [categoryID, setCategoryID ] = useState('');
