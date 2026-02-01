@@ -22,7 +22,7 @@ export default function BudgetModal({isOpen, onClose, category=null}){
         const categoryData = {
             category_name : categoryName, 
             allocated_amount : amount, 
-            monthly_reccurence: monthlyRepeat}
+            is_recurring: monthlyRepeat}
 
         try {
             if (isEditMode){

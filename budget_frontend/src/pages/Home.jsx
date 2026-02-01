@@ -11,7 +11,7 @@ import { useAppData } from '../providers/AppDataProvider';
 function Home() {
 
   const { user } = useAuth();
-  const { categories, expenses } = useAppData();
+  const { categories, expenses, income } = useAppData();
     
   // TODO: add filter to expensis so it can filter and calculate spending
 
@@ -24,30 +24,23 @@ function Home() {
         balance : 500
     
       }
-      
+  console.log(income)
   
   return (
     <>
-    <main className="max-w-6xl p-4 mx-auto">
+    <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      <MonthAndYear />
 
-          <MonthAndYear />
+      {/* Dashboard */}
+      <section className="justify-center">
+        <Dashboard data={userData} />
+      </section>
 
-          {/* Center card */}
-          <div className="grid grid-cols-1 gap-4 p-2 mb-4 lg:flex lg:flex-row lg:justify-evenly">
-              <div className='square-aspect'>
-                  <AddExpense />
-              </div>
-              <div >
-                  <Dashboard data={userData} />
-              </div>
-              <div className='square-aspect'>
-                  <Friends />
-              </div>
-          </div>
-
+      {/* Budgets */}
+      <section>
         <Budgets budget={categories} />
-
-      </main>
+      </section>
+    </main>
     </>
   )
 }

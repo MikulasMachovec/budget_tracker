@@ -13,12 +13,12 @@ function BudgetCard({ category, expenses }){
     return (
     <div className="bg-white shadow-md rounded-xl p-5 flex flex-col gap-3 hover:shadow-lg transition">
 
-  {/* Header row */}
-  	<div className="flex items-center justify-between">
-    	{/* Left side — name */}
-    	<h3 className="text-lg font-semibold text-gray-800 border-b border-b-gray-300">{category_name}</h3>
-    
+		{/* Header row */}
+		<div className="flex items-center justify-between">
 
+    	{/* Left side — name */}
+		<h3 className="text-lg font-semibold text-gray-800 border-b border-b-gray-300">{category_name}</h3>
+    
     	{/* Right side — actions button */}
 		<div className="flex items-center gap-3 text-sm">
 			<button 
@@ -26,20 +26,14 @@ function BudgetCard({ category, expenses }){
 			onClick={()=> setIsModalOpen(true)}
 			>
 				Edit
-				
 			</button>
-
-			<BudgetModal
-				isOpen={isModalOpen}
-				onClose = {() => setIsModalOpen(false)}
-				category={category}
-			/>
-
 
 			<button 
 				className="text-red-600 hover:text-red-800 font-medium"
 				onClick={()=> deleteCategory(category.id)}
-			>Delete</button>
+			>
+				Delete
+			</button>
 		</div>
   	</div>
 
@@ -53,6 +47,12 @@ function BudgetCard({ category, expenses }){
 		{/* Progress bar */}
 		<ProgressBar used={spentAmount} max_amount={allocated_amount} />
   	</div>
+
+	<BudgetModal
+		isOpen={isModalOpen}
+		onClose = {() => setIsModalOpen(false)}
+		category={category}
+	/>
 	  
 </div>
 

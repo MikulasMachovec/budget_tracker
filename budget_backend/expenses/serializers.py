@@ -1,6 +1,6 @@
 from django.utils import timezone
 from rest_framework import serializers
-from .models import Category, Expense, get_uncategorized_spending
+from .models import Category, Expense, Income, get_uncategorized_spending
 
 
 
@@ -27,7 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'spent_amount',
             'remaining_amount',
             'is_over_spent',
-            'monthly_reccurence',
+            'is_reccurring',
         ]
 
 
@@ -55,3 +55,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
             category=category,
             **validated_data
         )
+
+class IncomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Income
+        fields = ['amount', 'is_reccurring']

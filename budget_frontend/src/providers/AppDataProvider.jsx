@@ -7,6 +7,7 @@ const AppDataContext = createContext();
 function AppDataProvider({ children }) {
     const [categories, setCategories] = useState([]);
     const [expenses, setExpenses] = useState([]);
+    const [incomes, setIncomes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -14,13 +15,16 @@ function AppDataProvider({ children }) {
         setLoading(true)
         try {
             api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-            const [catRes, expRes] = await Promise.all([
+            const [catRes, expRes, incRes] = await Promise.all([
                 api.get('/api/expenses/categories/'),
-                api.get('/api/expenses/expenses')
+                api.get('/api/expenses/expenses/'),
+                api.get('/api/expenses/incomes/')
             ])
 
             setCategories(catRes.data)
             setExpenses(expRes.data)
+            setIncomes(incRes.data)
+
         } catch(error){
             console.error('Failed to load user data', error);
             setError('Failed to fetch user data');
@@ -36,11 +40,20 @@ function AppDataProvider({ children }) {
         try {
             const response = await api.post('/api/expenses/expenses/', expenseData);
 
-            setExpenses((prev) => [...prev, response.data])
+            setExpenses(prev => [...prev, response.data])
 
             
         } catch (error) {
             throw error;
+        }
+    }
+
+    const addIncome = async(incomeData)=>{
+        try {
+            const response = await api.post('/api/expenses/incomes/', incomeData)
+            setIncomes(prev => [...prev, response.data])
+        } catch (error) {
+            
         }
     }
 
@@ -95,9 +108,9 @@ function AppDataProvider({ children }) {
 
             return acc;
         },{});
-      },[expenses, currentMonth])
+    },[expenses, currentMonth])
 
-
+    
     const clearUserData = () => {
         setCategories([]);
         setExpenses([]);
@@ -109,7 +122,9 @@ function AppDataProvider({ children }) {
         value={{
             categories,
             expenses,
+            incomes,
             spentByCategory,
+            addIncome,
             setCategories,
             setExpenses,
             addExpense,

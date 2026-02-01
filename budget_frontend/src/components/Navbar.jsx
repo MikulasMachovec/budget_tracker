@@ -35,15 +35,20 @@ function Navbar() {
                 {user ? (
                 <>
                 {/* logged user */}
-                    <Link to='/' className="hover:text-gray-200 hover:bg-[#fcab77] transition p-2 rounded-lg">Overview</Link>
-                    <Link to='/profile' className="hover:text-gray-200 hover:bg-[#fcab77] transition p-2 rounded-lg">Profile</Link>
-                    <Link to='/' className="hover:text-gray-200 hover:bg-[#fcab77] transition p-2 rounded-lg">Planner</Link>
-                    <Link to='/' className="hover:text-gray-200 hover:bg-[#fcab77] transition p-2 rounded-lg">Saving</Link>
-                    <Link to='/' className="hover:text-gray-200 hover:bg-[#fcab77] transition p-2 rounded-lg">History</Link>
+                    <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Overview</Link>
+                    <Link to='/profile' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Profile</Link>
+                    <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Planner</Link>
+                    <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Saving</Link>
+                    <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">History</Link>
 
                 
                     <span className="ml-4 font-medium">Hi, {user.username}</span>
-                    <a onClick={() => logout()} className='bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition'>Logout</a>
+                      <button
+                        onClick={() => logout()}
+                        className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white p-2 rounded-lg transition"
+                      >
+                        Logout
+                      </button>
                 </>
                 ) : (
                 <>

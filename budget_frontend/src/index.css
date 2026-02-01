@@ -2,33 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-:root{
-    --background: #F39F9F;
-    --card-background: #FFECC0;
-    --navbar-color: #FFC29B;
-}
-
-
-body {
-  font-family: 'Inter', sans-serif;
-}
-
-html {
-    background : var(--background)
-}
-
-nav{
-    background : var(--navbar-color)
-}
-nav li:hover{
-    background : #F39F9F
-}
-
-.card{
-    background : var(--card-background)
-}
-
-.footer{
-    background : var(--navbar-color)
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
 }
