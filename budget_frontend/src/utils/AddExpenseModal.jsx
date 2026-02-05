@@ -71,7 +71,7 @@ export default function AddExpenseModal({ isOpen, onClose }) {
               </div>
 
               <div>
-                <label htmlFor='category' className="block text-sm font-medium text-gray-700">Description</label>
+                <label htmlFor='category' className="block text-sm font-medium text-gray-700">Category</label>
                 <select
                   name="category"
                   value={categoryID}

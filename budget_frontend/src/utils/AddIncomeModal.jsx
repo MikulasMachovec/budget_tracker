@@ -5,14 +5,14 @@ import { useAppData } from '../providers/AppDataProvider';
 // FIXME: redo this to work propertly for income
 
 export default function AddIncomeModal({ isOpen, onClose }) {
-  const [expenseName, setExpenseName] = useState('');
-  const [categoryID, setCategoryID ] = useState('');
+  const [incomeName, setIncomeName] = useState('Salary');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
+  const [isReccurring, setIsReccurring] = useState(false)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const {categories, addExpense} = useAppData();
+  const {categories, addExpense, addIncome} = useAppData();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,13 +20,13 @@ export default function AddIncomeModal({ isOpen, onClose }) {
     setError('');
 
     try {
-      const expenseData = {
-        expense_name: expenseName, 
-        category_id : categoryID, 
-        amount, 
+      const incomeData = {
+        name: incomeName, 
+        amount,
+        is_reccurring: isReccurring,
         date
       };
-      await addExpense(expenseData)
+      await addIncome(incomeData)
     } catch (error) {
       setError(
         error.response?.data?.message || 'Something happend while saving expense'
@@ -58,34 +58,17 @@ export default function AddIncomeModal({ isOpen, onClose }) {
             <h2 className="text-xl font-semibold mb-4 text-center">Add Income</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor='expenseName' className="block text-sm font-medium text-gray-700">Name</label>
+                <label htmlFor='incomeName' className="block text-sm font-medium text-gray-700">Name</label>
                 <input
                   type="text"
-                  name="expenseName"
-                  value={expenseName}
-                  onChange={(e) => setExpenseName(e.target.value)}
+                  name="incomeName"
+                  value={incomeName}
+                  onChange={(e) => setIncomeName(e.target.value)}
                   required
                   className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
                 />
               </div>
 
-              <div>
-                <label htmlFor='category' className="block text-sm font-medium text-gray-700">Description</label>
-                <select
-                  name="category"
-                  value={categoryID}
-                  onChange={(e) => setCategoryID(e.target.value)}
-                  className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
-                  required
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.category_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
 
               <div className="flex gap-2">
                 <div className="flex-1">
@@ -113,6 +96,25 @@ export default function AddIncomeModal({ isOpen, onClose }) {
                   />
                 </div>
               </div>
+
+              <div className="flex items-center gap-2 mt-6">
+                <label
+                    htmlFor="monthly_repeat"
+                    className="text-sm font-medium text-gray-700"
+                >
+                    Monthly Repeat?
+                </label>
+                    <input
+                        type="checkbox"
+                        id="monthly_repeat"
+                        name="monthly_repeat"
+                        checked={isReccurring}
+                        onChange={e => setIsReccurring(e.target.checked)                                        }
+                        className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                <span className="text-sm text-gray-700">YES</span>
+              </div>
+            
 
               <div className="flex justify-end gap-3 pt-4">
                 <button

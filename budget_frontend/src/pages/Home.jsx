@@ -11,21 +11,21 @@ import { useAppData } from '../providers/AppDataProvider';
 function Home() {
 
   const { user } = useAuth();
-  const { categories, expenses, income } = useAppData();
-    
-  // TODO: add filter to expensis so it can filter and calculate spending
+  const { categories, expenses, monthlyIncome, 
+          spentByCategory, spentByMonth 
+        } = useAppData();
 
-      const userData = {
-        ...user, 
-        expenses,
-        categories,
-        monthlyBudget : 2000,
-        spending : 1500,
-        balance : 500
-    
-      }
-  console.log(income)
-  
+  const userData = {
+    ...user, 
+    expenses,
+    categories,
+    monthlyBudget : monthlyIncome,
+    spending : spentByMonth,
+    balance : monthlyIncome - spentByMonth,
+
+
+  }
+
   return (
     <>
     <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">

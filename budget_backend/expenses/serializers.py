@@ -59,4 +59,4 @@ class ExpenseSerializer(serializers.ModelSerializer):
 class IncomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Income
-        fields = ['amount', 'is_reccurring']
+        fields = ['name', 'amount', 'is_reccurring']

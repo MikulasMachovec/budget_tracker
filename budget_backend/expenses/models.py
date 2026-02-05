@@ -84,6 +84,7 @@ class Expense(models.Model):
     
 class Income(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(default=timezone.localdate)
     is_reccurring = models.BooleanField(default=False)

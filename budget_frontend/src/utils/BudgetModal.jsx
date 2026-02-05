@@ -44,7 +44,6 @@ export default function BudgetModal({isOpen, onClose, category=null}){
 
     useEffect(() => {
         if (category) {
-            console.log(category)
             setCategoryName(category.category_name);
             setAmount(category.allocated_amount);
             setMonthlyRepeat(category.monthly_reccurence);

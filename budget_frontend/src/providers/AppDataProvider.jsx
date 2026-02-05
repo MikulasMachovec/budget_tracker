@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect,useMemo } from "react";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import api from '../api';
 
 
@@ -24,7 +24,6 @@ function AppDataProvider({ children }) {
             setCategories(catRes.data)
             setExpenses(expRes.data)
             setIncomes(incRes.data)
-
         } catch(error){
             console.error('Failed to load user data', error);
             setError('Failed to fetch user data');
@@ -109,7 +108,15 @@ function AppDataProvider({ children }) {
             return acc;
         },{});
     },[expenses, currentMonth])
-
+    
+    const spentByMonth = useMemo(()=>{
+        return Object.values(spentByCategory)
+            .reduce((total, value) => total + value, 0)
+    },[expenses])
+    
+    const monthlyIncome = useMemo(()=>{
+        return incomes.reduce((total, income) => total + Number(income.amount), 0)
+    }, [incomes])
     
     const clearUserData = () => {
         setCategories([]);
@@ -124,6 +131,8 @@ function AppDataProvider({ children }) {
             expenses,
             incomes,
             spentByCategory,
+            spentByMonth,
+            monthlyIncome,
             addIncome,
             setCategories,
             setExpenses,
