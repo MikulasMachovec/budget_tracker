@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import AddExpenseModal from '../utils/AddExpenseModal'
 import AddIncomeModal from '../utils/AddIncomeModal'
+import ExpensesDetails from '../utils/ExpensesDetails'
 
 function Dashboard({ data }) {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false)
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false)
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   return (
     <section className="mx-auto bg-white rounded-2xl border border-gray-200 p-8">
@@ -77,9 +79,14 @@ function Dashboard({ data }) {
 
       {/* Footer action */}
       <div className="mt-8 flex justify-center">
-        <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
-          View details
-          <i className="fa-solid fa-caret-down text-xs"></i>
+        <button 
+          className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+          onClick={() => setIsDetailsOpen(prev => !prev)}    
+        >
+          { isDetailsOpen ? 
+          (<>Close expenses details <i className="fa-solid fa-caret-up text-xs"></i></>) :
+          (<>Open expenses details  <i className="fa-solid fa-caret-down text-xs"></i></>)
+          }
         </button>
       </div>
 
@@ -91,6 +98,9 @@ function Dashboard({ data }) {
       <AddIncomeModal
         isOpen={isIncomeModalOpen}
         onClose={() => setIsIncomeModalOpen(false)}
+      />
+      <ExpensesDetails
+        isOpen={isDetailsOpen}
       />
     </section>
   )

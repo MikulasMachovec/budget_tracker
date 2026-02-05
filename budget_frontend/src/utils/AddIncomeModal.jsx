@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppData } from '../providers/AppDataProvider';
 
-// FIXME: redo this to work propertly for income
-
 export default function AddIncomeModal({ isOpen, onClose }) {
   const [incomeName, setIncomeName] = useState('Salary');
   const [amount, setAmount] = useState('');
