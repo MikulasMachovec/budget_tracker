@@ -14,36 +14,36 @@ function MobileNavbar({
 
   return (
     <div className="md:hidden">
-      <ul className="flex flex-col space-y-4 p-4">
+      <ul className="flex flex-col p-4 space-y-4">
         {user ? (
           <>
             <li className="flex justify-center py-3">
               <Link to='/' 
-              className="hover:text-gray-200 transition">
+              className="transition hover:text-gray-200">
                 Overview
               </Link>
             </li>
 
             <li className="flex justify-center py-3">
-              <Link to='/profile' className="hover:text-gray-200 transition">
+              <Link to='/profile' className="transition hover:text-gray-200">
                 Profile
               </Link>
             </li>
 
             <li className="flex justify-center py-3">
-              <Link to='/' className="hover:text-gray-200 transition">
+              <Link to='/' className="transition hover:text-gray-200">
                 Planner
               </Link>
             </li>
 
             <li className="flex justify-center py-3">
-              <Link to='/' className="hover:text-gray-200 transition">
+              <Link to='/' className="transition hover:text-gray-200">
                 Saving
               </Link>
             </li>
 
             <li className="flex justify-center py-3">
-              <Link to='/' className="hover:text-gray-200 transition">
+              <Link to='/' className="transition hover:text-gray-200">
                 History
               </Link>
             </li>
@@ -55,7 +55,7 @@ function MobileNavbar({
             </li>
             <li className="flex justify-center py-3">
                 <a onClick={() => logout()} 
-                className='text-red-600 font-semibold p-2 rounded-lg transition'
+                className='p-2 font-semibold text-red-600 transition rounded-lg'
                 >
                     Logout
                 </a>
@@ -66,7 +66,7 @@ function MobileNavbar({
             <li className="flex justify-center py-3 rounded-lg">
               <button
                 onClick={onOpenLogin}
-                className="text-lg hover:text-gray-200 transition"
+                className="text-lg transition hover:text-gray-200"
               >
                 Login
               </button>
@@ -75,7 +75,7 @@ function MobileNavbar({
             <li className="flex justify-center py-3 rounded-lg">
               <button
                 onClick={onOpenRegister}
-                className="text-lg hover:text-gray-200 transition"
+                className="text-lg transition hover:text-gray-200"
               >
                 Register
               </button>

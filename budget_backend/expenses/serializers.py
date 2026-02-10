@@ -41,7 +41,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Expense
-        fields = ['expense_name', 'amount', 'date', 'category_id']
+        fields = ['id','expense_name', 'amount', 'date', 'category_id']
 
     def create(self, validated_data):
         user = self.context['request'].user

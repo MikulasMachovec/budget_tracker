@@ -22,21 +22,33 @@ function AuthProvider({ children }) {
 
 
     // Login 
-    const login = async ({access, refresh}) => {
-        localStorage.setItem('accessToken', access);
-        localStorage.setItem('refreshToken', refresh);
-        
-        setAccessToken(access);
-        setRefreshToken(refresh);
+    const login = async (credentials) => {
+        try {
+            const tokenResponse = await api.post(
+                '/api/account/token/',
+                credentials
+                )
 
-        api.defaults.headers.common.Authorization = `Bearer ${access}`
+            const { access, refresh } = tokenResponse.data;
 
-        const response = await api.get("/api/account/user/")
-        setUser(response.data)
+            localStorage.setItem('accessToken', access);
+            localStorage.setItem('refreshToken', refresh);
+            
+            setAccessToken(access);
+            setRefreshToken(refresh);
 
-        // load user data
-        loadUserData(access);
-    }
+            api.defaults.headers.common.Authorization = `Bearer ${access}`
+            
+            const userResponse = await api.get("/api/account/user/")
+            setUser(userResponse.data)
+
+            // load user data
+            loadUserData(access);
+
+        } catch (error) {
+            throw error
+        }  
+    };
 
     // Logout
     const logout = () => {

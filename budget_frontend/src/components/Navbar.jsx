@@ -25,13 +25,13 @@ function Navbar() {
 
   return (
     <>
-        <nav className="text-black rounded-xl shadow-md max-w-6xl mx-auto p-4 mt-6">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
+        <nav className="max-w-6xl p-4 mx-auto mt-6 text-black shadow-md rounded-xl">
+          <div className="flex items-center justify-between max-w-6xl mx-auto">
             {/* Brand */}
             <div className="text-2xl font-bold tracking-wide">Budget Tracker (Budgeteer?)</div>
           
             {/* Links (hidden on mobile) */}
-            <div className="hidden md:flex space-x-2 items-center">
+            <div className="items-center hidden space-x-2 md:flex">
                 {user ? (
                 <>
                 {/* logged user */}
@@ -45,7 +45,7 @@ function Navbar() {
                     <span className="ml-4 font-medium">Hi, {user.username}</span>
                       <button
                         onClick={() => logout()}
-                        className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white p-2 rounded-lg transition"
+                        className="p-2 text-red-600 transition border-2 border-red-600 rounded-lg hover:bg-red-600 hover:text-white"
                       >
                         Logout
                       </button>
@@ -53,13 +53,13 @@ function Navbar() {
                 ) : (
                 <>
                 {/* Default Navabr */}
-                    <a onClick={() => setIsLoginOpen(true)} className="ml-4 hover:text-gray-200 transition">Login</a>
-                    <a onClick={() => setIsRegisterOpen(true)} className="ml-4 hover:text-gray-200 transition">Register</a>  
+                    <a onClick={() => setIsLoginOpen(true)} className="ml-4 transition hover:text-gray-200">Login</a>
+                    <a onClick={() => setIsRegisterOpen(true)} className="ml-4 transition hover:text-gray-200">Register</a>  
                 </>
                 )}
             </div>
 
-          {/* Mobile menu placeholder */}
+          {/* Mobile menu */}
           <div className="md:hidden">
             {isMobileNavOpen?
               <button
@@ -79,30 +79,9 @@ function Navbar() {
           </div>
         </div>
 
-        {/* {isMobileNavOpen && (
-          <div className="md:hidden">
-            <ul className="flex flex-col space-y-4 p-4">
-              <li className="flex justify-center py-3 rounded-lg mb-1">
-                <a onClick={() => setIsLoginOpen(true)} 
-                  className="hover:text-gray-200 transition text-lg cursor-pointer"
-                  >
-                  Login
-                  </a>
-              </li>
-              <li className='flex justify-center py-1 rounded-lg mb-3'>
-                <a onClick={() => setIsRegisterOpen(true)} 
-                className="ml-4 hover:text-gray-200 transition text-lg cursor-pointer"
-                >
-                  Register
-                </a>
-              </li>
-            </ul>
-          </div>
-        )} */}
-
         <MobileNavbar
           isOpen={isMobileNavOpen}
-          onClose={() => setIsMobileNavOpen(false)}
+          onClose={() => {setIsMobileNavOpen(false)}}
           onOpenLogin={onOpenLogin}
           onOpenRegister={onOpenRegister}
           user={user}
@@ -114,7 +93,10 @@ function Navbar() {
 
     <LoginModal 
     isOpen={isLoginOpen}
-    onClose={() => setIsLoginOpen(false)}
+    onClose={() => {
+      setIsLoginOpen(false)
+      setIsMobileNavOpen(false)
+    }}
     onOpenRegister={onOpenRegister}           
     /> 
     <RegisterModal 

@@ -33,7 +33,6 @@ export default function BudgetModal({isOpen, onClose, category=null}){
             onClose();
         } catch (error) {
             error.response?.data?.message || 'Something went wrong'
-            console.log(error)
     
         }finally{
             setLoading(false)
@@ -125,12 +124,22 @@ export default function BudgetModal({isOpen, onClose, category=null}){
                             >
                               Cancel
                             </button>
-                            <button
-                              type="submit"
-                              className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
-                            >
-                              {isEditMode ? 'Update' : 'Save' }
-                            </button>
+
+                            {loading ? 
+                                <button
+                                type="submit"
+                                className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                                >
+                                {isEditMode ? 'Updating' : 'Saving' } 
+                                </button>   
+                            :
+                                <button
+                                type="submit"
+                                className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                                >
+                                {isEditMode ? 'Update' : 'Save' }
+                                </button>
+                            }
                         </div>
                     </form>
 

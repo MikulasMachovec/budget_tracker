@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'motion/react';
+import ExpenseTable from '../components/ExpenseTable'
 
-function ExpensesDetails({ isOpen }) {
+function ExpensesDetails({ isOpen, expenses }) {
+  console.log(expenses)
   return (
     <>
       <AnimatePresence>
@@ -11,15 +13,18 @@ function ExpensesDetails({ isOpen }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="mx-auto bg-white rounded-2xl border border-gray-200 p-8 mt-4"
+          className="p-8 mx-auto mt-4 bg-white border border-gray-200 rounded-2xl"
         >
-          <div className="w-full self-start text-start pb-3">
-            <h2 className="font-semibold text-lg text-gray-700">Expenses details</h2>
+          <div className="self-start w-full pb-3 text-start">
+            <h2 className="text-lg font-semibold text-gray-700">Expenses details</h2>
           </div>
 
-          <div className="min-w-full border-2 border-gray-200 rounded-lg p-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Your category content here */}
+          <div className="min-w-full p-6 border-2 border-gray-200 rounded-lg">
+            <div className="">
+              {/* TODO: spending diagram */}
+              <ExpenseTable 
+                expenses={expenses}
+              />
             </div>
           </div>
         </motion.div>

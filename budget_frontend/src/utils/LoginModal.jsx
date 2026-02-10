@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../providers/AuthProvider';
+import { useError } from '../providers/ErrorProvider';
 
 
 
@@ -14,18 +15,17 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
     
     const redirect = useNavigate()
     const { login } = useAuth();
+    const { showError, clearError} = useError();
 
     const handleLogin = async (e) =>  {
         e.preventDefault();
         setLoading(true);
         setError('');
     
+        const userData = {email, password} 
+        
         try{
-            const userData = {email, password} 
-            const response = await api.post('/api/account/token/', userData)
-
-            await login(response.data)
-            console.log('Login successful.')
+            await login(userData)
             redirect('/')
             onClose();
         } catch (err) {
@@ -41,23 +41,23 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
         <AnimatePresence>
             {isOpen && (
                 <motion.div 
-                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >
                     <motion.div
-                        className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md"
+                        className="w-full max-w-md p-6 bg-white shadow-lg rounded-2xl"
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
                     >   
-                    <div className="relative mb-4 flex items-center justify-center">
+                    <div className="relative flex items-center justify-center mb-4">
                         <h2 className="text-xl font-semibold text-gray-800">Login</h2>
                         <button
                             type="button"
                             onClick={onClose}
-                            className="absolute right-0 text-gray-500 text-lg hover:text-red-700 "
+                            className="absolute right-0 text-lg text-gray-500 hover:text-red-700 "
                         >
                             <i className="fa-solid fa-x"></i>
                         </button>
@@ -73,7 +73,7 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                className='mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring-blue-200'/>
+                                className='block w-full p-2 mt-1 border border-gray-300 rounded-xl focus:ring-blue-200'/>
                             </div>
 
                             {/* Password */}
@@ -84,26 +84,25 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                className='mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring-blue-200'/>
+                                className='block w-full p-2 mt-1 border border-gray-300 rounded-xl focus:ring-blue-200'/>
                             </div>
 
                             <div className='flex justify-end'>
                             <a href="#" 
-                            className=" ml-4 text-blue-600 underline hover:text-gray-200 transition"
+                            className="ml-4 text-blue-600 underline transition hover:text-gray-200"
                             onClick={onOpenRegister}
                             >
                                 Register
                                 </a>
                             </div>
 
-                            {error && <div className='block w-full p-1 border border-red-600 rounded-xl
-                                     bg-red-300 text-center text-red-700'>{error}</div> }
+                            {error && <div className='block w-full p-1 text-center text-red-700 bg-red-300 border border-red-600 rounded-xl'>{error}</div> }
                             
                             <div className='flex justify-center'>
                                 {loading ?
                                     <button
                                     type='submit' 
-                                    className="px-4 py-2 rounded-xl bg-blue-300 text-white"
+                                    className="px-4 py-2 text-white bg-blue-300 rounded-xl"
                                     disabled
                                     >
                                         Loggin in ...
@@ -111,7 +110,7 @@ export default function LoginModal({ isOpen, onClose, onOpenRegister }){
                                     :
                                     <button
                                     type='submit' 
-                                    className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                                    className="px-4 py-2 text-white bg-blue-600 rounded-xl hover:bg-blue-700"
                                     >
                                         Login
                                     </button>                  

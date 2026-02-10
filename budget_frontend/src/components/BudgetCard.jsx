@@ -11,7 +11,7 @@ function BudgetCard({ category, expenses }){
 	const spentAmount = spentByCategory[category.id] || 0;
 
     return (
-    <div className="bg-white shadow-md rounded-xl p-5 flex flex-col gap-3 hover:shadow-lg transition">
+    <div className="flex flex-col gap-3 p-5 transition bg-white shadow-md rounded-xl hover:shadow-lg">
 
 		{/* Header row */}
 		<div className="flex items-center justify-between">
@@ -22,14 +22,14 @@ function BudgetCard({ category, expenses }){
     	{/* Right side — actions button */}
 		<div className="flex items-center gap-3 text-sm">
 			<button 
-			className="text-blue-600 hover:text-blue-800 font-medium"
+			className="font-medium text-blue-600 hover:text-blue-800"
 			onClick={()=> setIsModalOpen(true)}
 			>
 				Edit
 			</button>
 
 			<button 
-				className="text-red-600 hover:text-red-800 font-medium"
+				className="font-medium text-red-600 hover:text-red-800"
 				onClick={()=> deleteCategory(category.id)}
 			>
 				Delete

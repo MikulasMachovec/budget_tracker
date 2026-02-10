@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import api from '../api';
+import { useError } from '../providers/ErrorProvider'
 
 
 const AppDataContext = createContext();
@@ -9,10 +10,12 @@ function AppDataProvider({ children }) {
     const [expenses, setExpenses] = useState([]);
     const [incomes, setIncomes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+
+    const { showError, clearError} = useError();
 
     const loadUserData = async(accessToken) =>{
         setLoading(true)
+        clearError();
         try {
             api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             const [catRes, expRes, incRes] = await Promise.all([
@@ -25,10 +28,10 @@ function AppDataProvider({ children }) {
             setExpenses(expRes.data)
             setIncomes(incRes.data)
         } catch(error){
-            console.error('Failed to load user data', error);
-            setError('Failed to fetch user data');
+            showError(error.data.message || 'Failed to fetch user data');
             setCategories([]);
             setExpenses([]);
+            throw error
         }finally {
             setLoading(false)
         }
@@ -42,6 +45,28 @@ function AppDataProvider({ children }) {
             setExpenses(prev => [...prev, response.data])
 
             
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    /** 
+     * Update existing expense by ID
+     *
+     * @param {number|string} expenseId - The ID of the expense to update
+     * @param {Object} expenseData - Updated expense payload
+     *  
+     * @returns {Promise<void>}
+     *  */      
+    const updateExpense = async( expenseId, expenseData ) => {
+        // params: expenseID
+        try {
+            const response = await api.put(`/api/expenses/expenses/${expenseId}`, expenseData)
+            setExpenses( prev => 
+                prev.map(expense =>
+                    expense.id === expenseId ? response.data : expense
+                )
+            );
         } catch (error) {
             throw error;
         }
@@ -137,6 +162,7 @@ function AppDataProvider({ children }) {
             setCategories,
             setExpenses,
             addExpense,
+            updateExpense,
             createCategory,
             deleteCategory,
             updateCategory,
