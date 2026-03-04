@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'motion/react';
 import ExpenseTable from '../components/ExpenseTable'
 
-function ExpensesDetails({ isOpen, expenses }) {
-  console.log(expenses)
+function ExpensesDetails({ isOpen, expenses}) {
+    
   return (
     <>
       <AnimatePresence>

@@ -37,9 +37,11 @@ function Navbar() {
                 {/* logged user */}
                     <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Overview</Link>
                     <Link to='/profile' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Profile</Link>
+                    {/*                     
                     <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Planner</Link>
                     <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">Saving</Link>
-                    <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">History</Link>
+                    <Link to='/' className="hover:text-gray-200 hover:bg-[#77726e] transition p-2 rounded-lg">History</Link> 
+                    */}
 
                 
                     <span className="ml-4 font-medium">Hi, {user.username}</span>

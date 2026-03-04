@@ -10,7 +10,7 @@ function AppDataProvider({ children }) {
     const [expenses, setExpenses] = useState([]);
     const [incomes, setIncomes] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const { showError, clearError} = useError();
 
     const loadUserData = async(accessToken) =>{
@@ -117,7 +117,7 @@ function AppDataProvider({ children }) {
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, '0')}`;
     };
 
-    const currentMonth = getMonthKey(new Date())
+    const currentMonth = getMonthKey(selectedDate)
 
     const spentByCategory = useMemo(()=>{
         return expenses.reduce(( acc , e ) => {
@@ -132,7 +132,7 @@ function AppDataProvider({ children }) {
 
             return acc;
         },{});
-    },[expenses, currentMonth])
+    },[expenses, selectedDate])
     
     const spentByMonth = useMemo(()=>{
         return Object.values(spentByCategory)
@@ -148,18 +148,49 @@ function AppDataProvider({ children }) {
         setExpenses([]);
     }
 
+    const normalizedExpense = expenses.map(exp =>({
+        id: exp.id,
+        name: exp.expense_name,
+        amount: exp.amount,
+        date: exp.date,
+        type: 'expense'
+    }))
+
+    const nomalizedIncome = incomes.map(inc => ({
+        id: inc.id,
+        name: inc.name,
+        amount: inc.amount,
+        date: inc.date,
+        type: 'income'
+    }))
+
+    const normalizedExpenseWithIncome = useMemo(() => {
+        const combined  = [...normalizedExpense, ...nomalizedIncome]
+
+        return combined 
+            .filter(item => {
+                const itemDate = new Date(item.date)
+                return(              
+                    itemDate.getMonth() === selectedDate.getMonth() &&
+                    itemDate.getFullYear() === selectedDate.getFullYear()
+                )
+            })
+            .sort((a,b) => new Date(b.date) - new Date(a.date))
+    }, [normalizedExpense, nomalizedIncome, selectedDate])
+
     
     return (
         <AppDataContext.Provider
         value={{
             categories,
+            setCategories,
             expenses,
             incomes,
+            normalizedExpenseWithIncome,
             spentByCategory,
             spentByMonth,
             monthlyIncome,
             addIncome,
-            setCategories,
             setExpenses,
             addExpense,
             updateExpense,
@@ -167,7 +198,9 @@ function AppDataProvider({ children }) {
             deleteCategory,
             updateCategory,
             loadUserData, 
-            clearUserData
+            clearUserData,
+            selectedDate,
+            setSelectedDate,
         }}
         >
             {children}

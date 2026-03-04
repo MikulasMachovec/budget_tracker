@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAppData } from '../providers/AppDataProvider';
 
+// FIXME: monhly repeat isnt working
+
 export default function BudgetModal({isOpen, onClose, category=null}){
     const [ categoryName, setCategoryName ] = useState('')
     const [ amount, setAmount ] = useState('')
@@ -56,19 +58,19 @@ export default function BudgetModal({isOpen, onClose, category=null}){
     return(
         <AnimatePresence>
             {isOpen && (
-                <motion.div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                <motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 >
                     <motion.div
-                    className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md"
+                    className="w-full max-w-md p-6 bg-white shadow-lg rounded-2xl"
                     initial={{scale:0.9, opacity: 0 }}
                     animate={{scale:1, opacity: 1 }}
                     exit={{scale:0.9, opacity: 0 }}
                     >
 
-                    <h2 className="text-xl font-semibold mb-4 text-center">
+                    <h2 className="mb-4 text-xl font-semibold text-center">
                         {isEditMode ? `Edit category ${category.category_name}` : 'Create Category'}
                         </h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -80,7 +82,7 @@ export default function BudgetModal({isOpen, onClose, category=null}){
                                   value={categoryName}
                                   onChange={e => setCategoryName(e.target.value)}
                                   required
-                                  className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
+                                  className="block w-full p-2 mt-1 border border-gray-300 rounded-xl focus:ring focus:ring-blue-200"
                                 />
                         </div>
                         
@@ -94,7 +96,7 @@ export default function BudgetModal({isOpen, onClose, category=null}){
                                     onChange={e => setAmount(e.target.value)}
                                     required
                                     step="0.01"
-                                    className="mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:ring focus:ring-blue-200"
+                                    className="block w-full p-2 mt-1 border border-gray-300 rounded-xl focus:ring focus:ring-blue-200"
                                     />
                             </div>
                             <div className="flex items-center gap-2 mt-6">
@@ -110,7 +112,7 @@ export default function BudgetModal({isOpen, onClose, category=null}){
                                         name="monthly_repeat"
                                         checked={monthlyRepeat}
                                         onChange={e => setMonthlyRepeat(e.target.checked)                                        }
-                                        className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                        className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                     />
                                 <span className="text-sm text-gray-700">YES</span>
                                 </div>
@@ -120,7 +122,7 @@ export default function BudgetModal({isOpen, onClose, category=null}){
                             <button
                               type="button"
                               onClick={onClose}
-                              className="px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300"
+                              className="px-4 py-2 bg-gray-200 rounded-xl hover:bg-gray-300"
                             >
                               Cancel
                             </button>
@@ -128,14 +130,14 @@ export default function BudgetModal({isOpen, onClose, category=null}){
                             {loading ? 
                                 <button
                                 type="submit"
-                                className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                                className="px-4 py-2 text-white bg-blue-600 rounded-xl hover:bg-blue-700"
                                 >
                                 {isEditMode ? 'Updating' : 'Saving' } 
                                 </button>   
                             :
                                 <button
                                 type="submit"
-                                className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                                className="px-4 py-2 text-white bg-blue-600 rounded-xl hover:bg-blue-700"
                                 >
                                 {isEditMode ? 'Update' : 'Save' }
                                 </button>

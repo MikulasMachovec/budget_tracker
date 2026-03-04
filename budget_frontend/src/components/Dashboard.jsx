@@ -7,7 +7,6 @@ function Dashboard({ data }) {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false)
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
-  
 
   return (
     <section className="p-8 mx-auto bg-white border border-gray-200 rounded-2xl">
@@ -102,8 +101,9 @@ function Dashboard({ data }) {
       />
       <ExpensesDetails
         isOpen={isDetailsOpen}
-        expenses={data.expenses}
+        expenses={data.normalizedExpenseWithIncome}
       />
+      
     </section>
   )
 }

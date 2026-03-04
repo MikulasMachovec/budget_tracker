@@ -11,14 +11,16 @@ import { useAppData } from '../providers/AppDataProvider';
 
 function Home() {
   const { user } = useAuth();
-  const { categories, expenses, monthlyIncome, 
-          spentByCategory, spentByMonth 
+  const { categories, expenses, incomes, monthlyIncome, 
+          spentByCategory, spentByMonth, normalizedExpenseWithIncome 
         } = useAppData();
-
+  
+        // TODO: add filter by month
   const userData = {
     ...user, 
     expenses,
     categories,
+    normalizedExpenseWithIncome,
     monthlyBudget : monthlyIncome,
     spending : spentByMonth,
     balance : monthlyIncome - spentByMonth,
